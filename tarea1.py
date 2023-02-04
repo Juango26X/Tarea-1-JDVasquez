@@ -89,4 +89,24 @@ def mostrarPrimos(n): #operación usada para hayar
 mostrarPrimos(100)
 
 #punto5
+disp = {0 : [(0, 1), (5, 4), (7, 5)],
+1 : [(6, 4), (7, 7)],
+2 : [(0, 2), (1, 2), (4, 9), (6, 1)],
+4 : [(2, 8), (3, 1), (5, 7)],
+6 : [(0, 3), (5, 6), (7, 2)],
+7 : [(0, 4), (1, 4), (2, 7)],
+8 : [(1, 9), (3, 8), (5, 7), (7, 6)]}
 
+def sumarValoresMatriz(d,b):
+    ans=0
+    for g in range(len(b)):
+        if b[g][0] in d and b[g][1] <= (len(d[b[g][0]])-1):
+
+            #print(b[g][0])
+            #print(b[g][1])
+            ans += (d[b[g][0]][b[g][1]][1])
+        else:
+         print("na")
+    return ans
+sumarValoresMatriz(disp, [(0, 0), (8, 3), (3, 5), (7, 2), (4, 3), (4,6)])
+    
