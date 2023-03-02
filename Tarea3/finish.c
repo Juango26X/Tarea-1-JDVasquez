@@ -1,5 +1,4 @@
 /*Juan David Vasquez Pomar Punto 5 Finish # */
-#include <limits.h>
 #include <stdio.h>
 void finish (){
 int ejecuciones;
