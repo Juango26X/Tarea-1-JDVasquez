@@ -1,32 +1,40 @@
+#ifndef BIGINTEGER_H
+#define BIGINTEGER_H
 
 #include <list>
-#include <forward_list>
 #include <iostream>
 #include <deque>
+#include <string>
+
 using namespace std;
 
 class BigInteger {
-public:
-    list<int> digitos;
-    BigInteger(string);
-    BigInteger(BigInteger&);
-        void add(BigInteger&);
-    void product(BigInteger&);
-    void subtract(BigInteger&);
-    void remainder(BigInteger&);
-    void pow(BigInteger&);
-    string toString() ;
-    bool operator ==( BigInteger& ) ;
-    bool operator<( BigInteger& ) ;
-    bool operator <=( BigInteger& ) ;
-    BigInteger operator +( BigInteger& ) ;
-    BigInteger operator -( BigInteger& ) ;
-    BigInteger operator*( BigInteger& ) ;
-    BigInteger operator/( BigInteger& ) ;
-    BigInteger operator %( BigInteger& ) ;
-    BigInteger sumarListaValores(list<BigInteger>& lista);
-    BigInteger multiplicarListaValores(list<BigInteger>& lista);
+    
+    private:
+        list<int>digitos;
+        int signo; //0 positivo 1 negativo
 
+    public:
+        BigInteger();
+        BigInteger(string&);
+        BigInteger(BigInteger&);
+        void imprimir();
+        void add(BigInteger&);
+        void product(BigInteger&);
+        void substract(BigInteger&);
+        //void remainder(BigInteger&);    
+        //void pow(BigInteger&);
+        //string toString();
+        bool operator ==(BigInteger&);
+        bool operator<( BigInteger&) ;
+        bool operator <=( BigInteger&) ;
+        BigInteger operator +( BigInteger&) ;
+        BigInteger operator -( BigInteger& ) ;
+        //BigInteger operator*( BigInteger& ) ;
+        //BigInteger operator/( BigInteger& ) ;
+        //BigInteger operator %( BigInteger& ) ;
+        static BigInteger sumarListaValores(list<BigInteger>&);  
+        //BigInteger multiplicarListaValores(list<BigInteger>& lista);  
 };
 
-
+#endif
