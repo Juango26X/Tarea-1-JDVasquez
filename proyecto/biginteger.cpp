@@ -130,8 +130,8 @@ void BigInteger::substract(BigInteger& num) {
         list<int>::reverse_iterator it2;
         list<int>::reverse_iterator end1;
         list<int>::reverse_iterator end2;
-        int *end1;
-        int *end2;
+        int* end1;
+        int* end2;
         int signoans;
         int sobra = 0;
         if (signo=0){
