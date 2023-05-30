@@ -36,42 +36,59 @@ bool BigInteger::operator<(BigInteger& num){
     else if (signo < num.signo) {
         ans = false;
     } 
+    else if (digitos.size()!=num.digitos.size()){
+        if (signo==0){
+            if (digitos.size() < num.digitos.size()) {
+                ans = true;
+            } 
+            else if (digitos.size() > num.digitos.size()) {
+                ans = false;
+            } 
+        }
+        else if (signo==1){
+            if (digitos.size() < num.digitos.size()) {
+                ans = false;
+            } 
+            else if (digitos.size() > num.digitos.size()) {
+                ans = true;
+            } 
+        }
+        
+    } 
     else {
-        if (digitos.size() < num.digitos.size()) {
-            ans = true;
-        } 
-        else if (digitos.size() > num.digitos.size()) {
-            ans = false;
-        } 
-        else {
             list<int>::const_iterator it1 = digitos.begin();
             list<int>::const_iterator it2 = num.digitos.begin();
             if (signo == 0){
-                while (it1 != digitos.end()) {
+                int flag1 = 0;
+                while (it1 != digitos.end()&&flag1!=1) {
                     if (*it1 < *it2) {
                         ans = true;
+                        flag1 = 1;
                     } 
                     else if (*it1 > *it2) {
                         ans = false;
+                         flag1 = 1;
                     }
                     ++it1;
                     ++it2;
                 }
             }
             else{
-                while (it1 != digitos.end()) {
+                int flag=0;
+                while (it1 != digitos.end()&&flag!=1) {
                     if (*it1 < *it2) {
-                        ans = true;
+                        ans = false;
+                        flag = 1;
                     } 
                     else if (*it1 > *it2) {
-                        ans = false;
+                        ans = true;
+                        flag = 1;
                     }
                     ++it1;
                     ++it2;
                 }
             }
             
-        }
 
     }
     return ans;
@@ -104,98 +121,172 @@ void BigInteger:: add(BigInteger& num){
         digitos=ans.digitos;
     }
     else{
-        if(signo=0){
+        if(signo==0){
             num.signo=0;
         }
-        else if (signo=1){
+        else if (signo==1){
             num.signo=1;
         }
-        //substract(num);
-    }
-}
-
-void BigInteger::substract(BigInteger& num) {
-    list<int>ans;
-    if (signo != num.signo) {
-        if(signo=0){
-            num.signo=0;
-        }
-        else if (signo=1){
-            num.signo=1;
-        }
-        add(num);
-    } 
-    else {
-        list<int>::reverse_iterator it1;
-        list<int>::reverse_iterator it2;
-        list<int>::reverse_iterator end1;
-        list<int>::reverse_iterator end2;
-        int* end1;
-        int* end2;
-        int signoans;
-        int sobra = 0;
-        if (signo=0){
-            if(*this<num){
-            signoans =1;
-            it1 = num.digitos.rbegin();
-            end1= num.digitos.rend();
-            it2 = digitos.rbegin();   
-            end2= digitos.rend();    
+        list<int>ans;
+        if (signo != num.signo) {
+            if(signo==0){
+                num.signo=0;
             }
-            else{
-                signoans =0;
+            else if (signo==1){
+                num.signo=1;
+            }
+        } 
+       
+        else {
+            list<int>::reverse_iterator it1;
+            list<int>::reverse_iterator it2;
+            list<int>::reverse_iterator end1;
+            list<int>::reverse_iterator end2;
+            int signoans;
+            int sobra = 0;
+            if (signo==0){
+                if(*this<num){
+                signoans =1;
+                it1 = num.digitos.rbegin();
+                end1= num.digitos.rend();
+                it2 = digitos.rbegin();   
+                end2= digitos.rend();    
+                }
+                else{
+                    signoans =0;
+                    it1 = digitos.rbegin();
+                    end1= digitos.rend();
+                    it2 = num.digitos.rbegin();
+                    end2= num.digitos.rend();
+                }
+            }
+            else if(signo==1){
+                if(*this<num){
+                signoans =1;
                 it1 = digitos.rbegin();
                 end1= digitos.rend();
                 it2 = num.digitos.rbegin();
                 end2= num.digitos.rend();
+    
+                }
+                else{
+                signoans = 0;
+                it1 = num.digitos.rbegin();
+                end1= num.digitos.rend();
+                it2 = digitos.rbegin();   
+                end2= digitos.rend();    
+                }
+            } 
+            while (it1 != end1 || it2 != end2) {
+                int diff = sobra;
+                if (it1 != end1) {
+                    diff += *it1;
+                    ++it1;
+                }
+                if (it2 != end2) {
+                    diff -= *it2;
+                    ++it2;
+                }
+                if (diff < 0) {
+                    diff += 10;
+                    sobra = -1;
+                } else {
+                    sobra = 0;
+                }
+                ans.push_front(diff);
             }
-        }
-        else if(signo=1){
-            if(*this<num){
-            signoans =1;
-            it1 = digitos.rbegin();
-            end1= digitos.rend();
-            it2 = num.digitos.rbegin();
-            end2= num.digitos.rend();
- 
+            while (!digitos.empty() && digitos.front() == 0) {
+                cout << "p";
+                ans.pop_front();
             }
-            else{
-            signoans = 0;
-            it1 = num.digitos.rbegin();
-            end1= num.digitos.rend();
-            it2 = digitos.rbegin();   
-            end2= digitos.rend();    
-            }
-        } 
-        while (it1 != end1 || it2 != end2) {
-            int diff = sobra;
-            if (it1 != end1) {
-                diff += *it1;
-                ++it1;
-            }
-            if (it2 != end2) {
-                diff -= *it2;
-                ++it2;
-            }
-            if (diff < 0) {
-                diff += 10;
-                sobra = -1;
-            } else {
-                sobra = 0;
-            }
-            ans.push_front(diff);
-        }
-        while (!digitos.empty() && digitos.front() == 0) {
-            ans.pop_front();
-        }
 
-        digitos = ans;
-        signo = signoans;
+            digitos = ans;
+            signo = signoans;
+        }
     }
 }
 
+void BigInteger::substract(BigInteger& num) {
+        list<int>ans;
+        if (signo != num.signo) {
+            if(signo==0){
+                num.signo=0;
+            }
+            else if (signo==1){
+                num.signo=1;
+            }
+        } 
+       
+        else {
+            list<int>::reverse_iterator it1;
+            list<int>::reverse_iterator it2;
+            list<int>::reverse_iterator end1;
+            list<int>::reverse_iterator end2;
+            int signoans;
+            int sobra = 0;
+            if (signo==0){
+                if(*this<num){
+                signoans =1;
+                it1 = num.digitos.rbegin();
+                end1= num.digitos.rend();
+                it2 = digitos.rbegin();   
+                end2= digitos.rend();    
+                }
+                else{
+                    signoans =0;
+                    it1 = digitos.rbegin();
+                    end1= digitos.rend();
+                    it2 = num.digitos.rbegin();
+                    end2= num.digitos.rend();
+                }
+            }
+            else if(signo==1){
+                if(*this<num){
+                signoans =1;
+                it1 = digitos.rbegin();
+                end1= digitos.rend();
+                it2 = num.digitos.rbegin();
+                end2= num.digitos.rend();
+    
+                }
+                else{
+                signoans = 0;
+                it1 = num.digitos.rbegin();
+                end1= num.digitos.rend();
+                it2 = digitos.rbegin();   
+                end2= digitos.rend();    
+                }
+            } 
+            while (it1 != end1 || it2 != end2) {
+                int diff = sobra;
+                if (it1 != end1) {
+                    diff += *it1;
+                    ++it1;
+                }
+                if (it2 != end2) {
+                    diff -= *it2;
+                    ++it2;
+                }
+                if (diff < 0) {
+                    diff += 10;
+                    sobra = -1;
+                } else {
+                    sobra = 0;
+                }
+                ans.push_front(diff);
+            }
+            while (!digitos.empty() && digitos.front() == 0) {
+                cout << "p";
+                ans.pop_front();
+            }
+
+            digitos = ans;
+            signo = signoans;
+        }
+}
+
 BigInteger BigInteger::operator+(BigInteger& num) {
-    BigInteger ans;
+    BigInteger ans1;
     if (signo == num.signo){
         int carry = 0;  
         list<int>::reverse_iterator it1 = digitos.rbegin();
@@ -210,15 +301,178 @@ BigInteger BigInteger::operator+(BigInteger& num) {
                 sum += *it2;
                 ++it2;
             }
-            ans.digitos.push_front(sum % 10);  
+            ans1.digitos.push_front(sum % 10);  
             carry = sum / 10;  
         }
-        ans.signo = signo; 
+        ans1.signo = signo;
+        signo=ans1.signo;
+        digitos=ans1.digitos;
     }
     else{
+        if(signo==0){
+            num.signo=0;
+        }
+        else if (signo==1){
+            num.signo=1;
+        }
+        list<int>ans;
+        if (signo != num.signo) {
+            if(signo==0){
+                num.signo=0;
+            }
+            else if (signo==1){
+                num.signo=1;
+            }
+        } 
+       
+        else {
+            list<int>::reverse_iterator it1;
+            list<int>::reverse_iterator it2;
+            list<int>::reverse_iterator end1;
+            list<int>::reverse_iterator end2;
+            int signoans;
+            int sobra = 0;
+            if (signo==0){
+                if(*this<num){
+                signoans =1;
+                it1 = num.digitos.rbegin();
+                end1= num.digitos.rend();
+                it2 = digitos.rbegin();   
+                end2= digitos.rend();    
+                }
+                else{
+                    signoans =0;
+                    it1 = digitos.rbegin();
+                    end1= digitos.rend();
+                    it2 = num.digitos.rbegin();
+                    end2= num.digitos.rend();
+                }
+            }
+            else if(signo==1){
+                if(*this<num){
+                signoans =1;
+                it1 = digitos.rbegin();
+                end1= digitos.rend();
+                it2 = num.digitos.rbegin();
+                end2= num.digitos.rend();
     
+                }
+                else{
+                signoans = 0;
+                it1 = num.digitos.rbegin();
+                end1= num.digitos.rend();
+                it2 = digitos.rbegin();   
+                end2= digitos.rend();    
+                }
+            } 
+            while (it1 != end1 || it2 != end2) {
+                int diff = sobra;
+                if (it1 != end1) {
+                    diff += *it1;
+                    ++it1;
+                }
+                if (it2 != end2) {
+                    diff -= *it2;
+                    ++it2;
+                }
+                if (diff < 0) {
+                    diff += 10;
+                    sobra = -1;
+                } else {
+                    sobra = 0;
+                }
+                ans.push_front(diff);
+            }
+            while (!digitos.empty() && digitos.front() == 0) {
+                cout << "p";
+                ans.pop_front();
+            }
+
+            ans1.digitos = ans;
+            ans1.signo = signoans;
+        }
     }
-    return ans;
+    return ans1;
+}
+BigInteger BigInteger::operator-(BigInteger& num) {
+    BigInteger ans1;
+    list<int>ans;
+        if (signo != num.signo) {
+            if(signo==0){
+                num.signo=0;
+            }
+            else if (signo==1){
+                num.signo=1;
+            }
+        } 
+       
+        else {
+            list<int>::reverse_iterator it1;
+            list<int>::reverse_iterator it2;
+            list<int>::reverse_iterator end1;
+            list<int>::reverse_iterator end2;
+            int signoans;
+            int sobra = 0;
+            if (signo==0){
+                if(*this<num){
+                signoans =1;
+                it1 = num.digitos.rbegin();
+                end1= num.digitos.rend();
+                it2 = digitos.rbegin();   
+                end2= digitos.rend();    
+                }
+                else{
+                    signoans =0;
+                    it1 = digitos.rbegin();
+                    end1= digitos.rend();
+                    it2 = num.digitos.rbegin();
+                    end2= num.digitos.rend();
+                }
+            }
+            else if(signo==1){
+                if(*this<num){
+                signoans =1;
+                it1 = digitos.rbegin();
+                end1= digitos.rend();
+                it2 = num.digitos.rbegin();
+                end2= num.digitos.rend();
+    
+                }
+                else{
+                signoans = 0;
+                it1 = num.digitos.rbegin();
+                end1= num.digitos.rend();
+                it2 = digitos.rbegin();   
+                end2= digitos.rend();    
+                }
+            } 
+            while (it1 != end1 || it2 != end2) {
+                int diff = sobra;
+                if (it1 != end1) {
+                    diff += *it1;
+                    ++it1;
+                }
+                if (it2 != end2) {
+                    diff -= *it2;
+                    ++it2;
+                }
+                if (diff < 0) {
+                    diff += 10;
+                    sobra = -1;
+                } else {
+                    sobra = 0;
+                }
+                ans.push_front(diff);
+            }
+            while (!digitos.empty() && digitos.front() == 0) {
+                cout << "p";
+                ans.pop_front();
+            }
+
+            ans1.digitos = ans;
+            ans1.signo = signoans;
+        }
+    return ans1;
 }
 void BigInteger::product(BigInteger& num) {
     BigInteger ans;
@@ -235,18 +489,16 @@ void BigInteger::product(BigInteger& num) {
     int lugar = 0;
     for (int d1 : digitos) {
         int subproducto_carry = 0;
-        deque<int> subproducto;
+        vector<int> subproducto(lugar, 0);
 
-        for (int i = 0; i < lugar; i++) {
-            subproducto.push_back(0);
-        }
         for (int d2 : num.digitos) {
             int producto = (d1 * d2) + subproducto_carry;
             subproducto.push_back(producto % 10);
             subproducto_carry = producto / 10;
         }
-        if (subproducto_carry > 0) {
-            subproducto.push_back(subproducto_carry);
+        while (subproducto_carry > 0) {
+            subproducto.push_back(subproducto_carry % 10);
+            subproducto_carry /= 10;
         }
         BigInteger subproductoBigInt;
         subproductoBigInt.digitos = list<int>(subproducto.begin(), subproducto.end());
@@ -268,5 +520,24 @@ static BigInteger sumarListaValores(list<BigInteger>& lista) {
         suma.add(valor);
     }
     return suma;
+}
+
+string BigInteger::toString() {
+    string result;
+    if (signo == 1) {
+        result += "-";
+    }
+    for (int digit : digitos) {
+        char digitChar = '0' + digit;  
+        result += digitChar;          
+    }
+    return result;
+}
+static BigInteger multiplicarListaValores(list<BigInteger>& lista) {
+    BigInteger producto;
+    for (BigInteger& valor : lista) {
+        producto.product(valor);
+    }
+    return producto;
 }
 

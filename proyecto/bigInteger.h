@@ -5,6 +5,7 @@
 #include <iostream>
 #include <deque>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -21,10 +22,10 @@ class BigInteger {
         void imprimir();
         void add(BigInteger&);
         void product(BigInteger&);
-        void substract(BigInteger&);
+        void substract(BigInteger& num);
         //void remainder(BigInteger&);    
         //void pow(BigInteger&);
-        //string toString();
+        string toString();
         bool operator ==(BigInteger&);
         bool operator<( BigInteger&) ;
         bool operator <=( BigInteger&) ;
@@ -34,7 +35,7 @@ class BigInteger {
         //BigInteger operator/( BigInteger& ) ;
         //BigInteger operator %( BigInteger& ) ;
         static BigInteger sumarListaValores(list<BigInteger>&);  
-        //BigInteger multiplicarListaValores(list<BigInteger>& lista);  
+        BigInteger multiplicarListaValores(list<BigInteger>& lista);  
 };
 
 #endif
